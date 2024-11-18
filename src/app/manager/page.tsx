@@ -3,15 +3,21 @@
 import React from "react";
 import { useRouter } from "next/navigation"; 
 
-const ManagerDashboard = () => {
+const AddUserManager = () => {
   const router = useRouter(); 
-  const managerEmail = "manager@example.com"; 
+
+  const users = [
+    "John Doe",
+    "Jane Smith",
+    "Emily Johnson",
+    "Michael Brown",
+  ]; 
 
   return (
     <div style={{ display: "flex", height: "100vh", backgroundColor: "#f5f5f5" }}>
       {/* Sidebar */}
       <div style={{ width: "20%", backgroundColor: "#333", color: "#fff", padding: "20px" }}>
-        <h2>Manager dashboard</h2>
+        <h2 style={{ color: "#fff" }}>Add User - Manager</h2>
       </div>
 
       {/* Main Content */}
@@ -25,14 +31,12 @@ const ManagerDashboard = () => {
             justifyContent: "space-between",
           }}
         >
-          <h3>
-            Hello, <span style={{ fontWeight: "normal" }}>*manager name*</span>
-          </h3>
+          <h3 style={{ color: "#000" }}>Users</h3>
           <div style={{ display: "flex", gap: "20px" }}>
             <a
               href="#"
               style={{ textDecoration: "none", color: "#000", cursor: "pointer" }}
-              onClick={() => router.push("/manager/users")} // Redirect to Users page
+              onClick={() => router.push("/users-dashboard")} // Redirect to Users Dashboard
             >
               Users
             </a>
@@ -44,16 +48,50 @@ const ManagerDashboard = () => {
 
         {/* Main Body */}
         <div style={{ flex: 1, padding: "20px", backgroundColor: "#fff" }}>
-          <div>
-            <label style={{ display: "block", marginBottom: "10px", fontWeight: "bold" }}>
-              Email:
-            </label>
-            <p style={{ fontSize: "16px", color: "#555", margin: "0" }}>{managerEmail}</p>
+          <h4 style={{ marginBottom: "10px", color: "#000" }}>Users:</h4>
+          <div
+            style={{
+              backgroundColor: "#e0e0e0",
+              padding: "20px",
+              borderRadius: "5px",
+              marginBottom: "20px",
+            }}
+          >
+            {users.length > 0 ? (
+              <ul style={{ margin: 0, padding: 0, listStyle: "none", color: "#000" }}>
+                {users.map((user, index) => (
+                  <li
+                    key={index}
+                    style={{
+                      marginBottom: "10px",
+                      color: "#000",
+                    }}
+                  >
+                    {user}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p style={{ color: "#000" }}>No users found</p>
+            )}
           </div>
+          <button
+            style={{
+              padding: "10px 20px",
+              backgroundColor: "#d3d3d3",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+              color: "#000", 
+            }}
+            onClick={() => alert("Add a new user clicked")} 
+          >
+            Add a new user
+          </button>
         </div>
       </div>
     </div>
   );
 };
 
-export default ManagerDashboard;
+export default AddUserManager;
