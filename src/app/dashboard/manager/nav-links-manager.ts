@@ -3,4 +3,5 @@ export const managerLinks = [
     { name: 'Profile', href: '/dashboard/manager/profile' },
     { name: 'Log out', href: '/' },
   ];
+
   

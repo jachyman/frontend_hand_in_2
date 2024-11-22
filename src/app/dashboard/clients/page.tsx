@@ -1,8 +1,8 @@
-import DashboardLayout from '@/app/dashboard/layout';
-import { managerLinks } from '@/app/dashboard/manager/nav-links-manager';
-
 export default function ClientDashboard() {
   return (
-      <p>hi, client</p>
+    <div>
+      <h1>Welcome to the client dashboard</h1>
+      <p>This is the main content area.</p>
+    </div>
   );
 }

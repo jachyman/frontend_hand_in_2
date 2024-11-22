@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 
-export default function TopBar({ links = [] }: { links?: { name: string; href: string }[] }) {
-  const pathname = usePathname();
+export default function TopBar({ links = [] }: { links?: { name: string; href: string }[] }) { //specifying that links should be an array and which attributes it needs to have 
+  const pathname = usePathname(); // for highlighting inactive/active
 
   return (
     <nav className="bg-gray-900 shadow-md">
@@ -14,7 +14,7 @@ export default function TopBar({ links = [] }: { links?: { name: string; href: s
         <div className="text-white text-lg font-bold">Fitness Center</div>
         {/* Navigation Links */}
         <div className="flex items-center space-x-6">
-          {links.map((link) => (
+          {links.map((link) => ( 
             <Link
               key={link.name}
               href={link.href}
