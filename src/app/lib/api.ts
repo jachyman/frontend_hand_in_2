@@ -4,6 +4,30 @@ type JwtPayload = {
   Role: string; // Add other fields if needed
 };
 
+export async function getUsers():Promise<any[]> {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+        throw new Error('No token found. Please log in first.');
+    }
+
+  const response = await fetch('https://swafe24fitness.azurewebsites.net/api/Users', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`, 
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch users: ${response.statusText}`);
+  }
+
+  // Parse and return the JSON response
+  const data = await response.json();
+  return data; //list of users
+    
+}
+
 export async function login(email: string, password: string): Promise<{ token: string; role: string }> {
   const response = await fetch('https://swafe24fitness.azurewebsites.net/api/Users/login', {
     method: 'POST',
