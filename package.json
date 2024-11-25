@@ -9,10 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/jwt-decode": "^3.1.0",
+    "axios": "^1.7.7",
     "clsx": "^2.1.1",
+    "jwt-decode": "^4.0.0",
     "next": "15.0.3",
+    "next-auth": "5.0.0-beta.25",
+    "nookies": "^2.5.2",
+    "openssl": "^2.0.0",
     "react": "19.0.0-rc-66855b96-20241106",
-    "react-dom": "19.0.0-rc-66855b96-20241106"
+    "react-dom": "19.0.0-rc-66855b96-20241106",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20",
