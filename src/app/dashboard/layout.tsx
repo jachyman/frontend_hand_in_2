@@ -2,7 +2,7 @@
 import TopBar from '@/app/ui/dashboard/top-bar';
 import { usePathname } from 'next/navigation';
 import { managerLinks } from '@/app/dashboard/manager/nav-links-manager';
-import { clientLinks } from '@/app/dashboard/clients/nav-links-client';
+import { clientLinks } from '@/app/dashboard/client/nav-links-client';
 import { trainerLinks } from '@/app/dashboard/trainer/nav-links-trainer';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {

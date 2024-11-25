@@ -10,7 +10,7 @@ export default function useLogout() {
     localStorage.removeItem('authToken');
 
     // Redirect to the login page
-    router.push('/dashboard/log-in');
+    router.push('/log-in');
   };
 
   return logout;

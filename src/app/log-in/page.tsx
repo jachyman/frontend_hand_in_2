@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation'; // For client-side navigation
+import { useRouter } from 'next/navigation';
 import { login } from '@/app/lib/api';
 
 export default function LoginForm() {
@@ -17,15 +17,24 @@ export default function LoginForm() {
     setError('');
 
     try {
-      const token = await login(email, password);
+      const { token, role } = await login(email, password);
 
-      // Save the JWT token in localStorage (or cookies for better security)
+      // Save the JWT token in localStorage 
       localStorage.setItem('authToken', token);
 
-      // Redirect to the manager dashboard
-      router.push('/dashboard/manager');
-    } catch (err) {
-      setError('Invalid email or password');
+      // Redirect based on the user's role
+      if (role === 'Manager') {
+        router.push('/dashboard/manager');
+      } else if (role === 'Client') {
+        router.push('/dashboard/client');
+      } else if( role === 'PersonalTrainer') {
+        router.push('/dashboard/trainer')
+      }
+       else {
+        throw new Error('Unknown role');
+      }
+    } catch (err: any) {
+      setError(err.message || 'An error occurred.');
     } finally {
       setIsLoading(false);
     }
