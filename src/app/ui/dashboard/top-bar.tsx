@@ -1,11 +1,23 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import clsx from 'clsx';
+import useLogout from '@/app/logout/page';
+import { useEffect } from 'react';
 
 export default function TopBar({ links = [] }: { links?: { name: string; href: string }[] }) { //specifying that links should be an array and which attributes it needs to have 
   const pathname = usePathname(); // for highlighting inactive/active
+  const logout = useLogout();
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+
+    if (!token) {
+      router.push('/log-in');
+    }
+  }, [router]);
 
   return (
     <nav className="bg-gray-900 shadow-md">
@@ -28,7 +40,14 @@ export default function TopBar({ links = [] }: { links?: { name: string; href: s
             >
               {link.name}
             </Link>
+            
           ))}
+
+        <button
+        onClick={logout}
+        className="mt-4 px-4 py-2 bg-red-500 text-white rounded"
+        > Log out
+        </button>
         </div>
       </div>
     </nav>
