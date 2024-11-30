@@ -28,6 +28,35 @@ export async function getUsers():Promise<any[]> {
     
 }
 
+export async function addUser(newUser: {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  accountType: string;
+}) {
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+    throw new Error('No token found. Please log in first.');
+  }
+
+  const response = await fetch('https://swafe24fitness.azurewebsites.net/api/Users', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify(newUser), // Correct structure for the payload
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to add user: ${response.statusText}`);
+  }
+
+  return response.json();
+}
+
+
 export async function login(email: string, password: string): Promise<{ token: string; role: string }> {
   const response = await fetch('https://swafe24fitness.azurewebsites.net/api/Users/login', {
     method: 'POST',
