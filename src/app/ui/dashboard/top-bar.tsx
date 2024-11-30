@@ -43,12 +43,15 @@ export default function TopBar({ links = [] }: { links?: { name: string; href: s
             </Link>
             
           ))}
-
-        <button
-        onClick={logout}
-        className="px-4 py-2 bg-red-500 text-white rounded"
-        > Log out
-        </button>
+        
+        {!(pathname.endsWith('/') || pathname.endsWith("/log-in")) && (
+            <button
+              onClick={logout}
+              className="px-4 py-2 bg-red-500 text-white rounded"
+            >
+              Log out
+            </button>
+          )}
         </div>
       </div>
     </nav>
