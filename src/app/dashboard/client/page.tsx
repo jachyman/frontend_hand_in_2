@@ -1,8 +1,7 @@
+import { redirect } from 'next/navigation';
+
 export default function ClientDashboard() {
   return (
-    <div>
-      <h1>Welcome to the client dashboard</h1>
-      <p>This is the main content area.</p>
-    </div>
+    redirect('/dashboard/client/workout-plans')
   );
 }
