@@ -2,29 +2,75 @@
 
 import { useEffect, useState } from "react";
 import { getUsers } from "@/app/lib/api";
-import { User } from "@/app/lib/definitions";
+import UserList from "@/app/ui/dashboard/users-listing";
+import { generatePagination } from "@/app/lib/utils";
+import Search from '@/app/ui/search';
+
+interface UserListUser {
+  id: string;
+  name: string;
+  surname: string;
+}
 
 export default function ManagerDashboard() {
-  const [users, setUsers] = useState<User[]>([]); // User[] means an array of User objects
-  const [loading, setLoading] = useState(true); 
+  const [users, setUsers] = useState<UserListUser[]>([]);
+  const [filteredUsers, setFilteredUsers] = useState<UserListUser[]>([]);
+  const [paginatedUsers, setPaginatedUsers] = useState<UserListUser[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [query, setQuery] = useState(''); 
 
+  const ITEM_PER_PAGE = 10;
+
+  // Fetch users and initialize state
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const data = await getUsers(); // Fetch the users
-        setUsers(data); // Update the state with fetched users
+        const data = await getUsers();
+        const transformedUsers = data.map((user: any) => ({
+          id: user.userId.toString(),
+          name: user.firstName,
+          surname: user.lastName,
+        }));
+        setUsers(transformedUsers); // Set all users
+        setFilteredUsers(transformedUsers); // Initialize filtered users
+        setTotalPages(Math.ceil(transformedUsers.length / ITEM_PER_PAGE));
+        setPaginatedUsers(transformedUsers.slice(0, ITEM_PER_PAGE));
       } catch (err) {
-        const error = err as Error; 
+        const error = err as Error;
         setError(error.message);
       } finally {
-        setLoading(false); // Set loading to false when done
+        setLoading(false);
       }
     };
 
     fetchUsers();
-  }, []); // empty dependency array ensures this runs only once
+  }, []);
 
+  // Filter users based on the search query
+  useEffect(() => {
+    const filtered = users.filter((user) =>
+      user.name.toLowerCase().includes(query.toLowerCase()) ||
+      user.surname.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredUsers(filtered);
+    setTotalPages(Math.ceil(filtered.length / ITEM_PER_PAGE));
+    setCurrentPage(1); // Reset to page 1 when the query changes
+  }, [query, users]);
+
+  // Update paginated users when currentPage or filteredUsers changes
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * ITEM_PER_PAGE;
+    const endIndex = startIndex + ITEM_PER_PAGE;
+    setPaginatedUsers(filteredUsers.slice(startIndex, endIndex));
+  }, [currentPage, filteredUsers]);
+
+  // Handle search input
+  const handleSearch = (term: string) => {
+    setQuery(term);
+  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -34,31 +80,51 @@ export default function ManagerDashboard() {
       <h1 className="text-2xl font-bold mb-4">Welcome to the Manager Dashboard</h1>
       <p className="mb-6">Below is the list of users.</p>
 
-      {users.length > 0 ? (
-        <div className="overflow-x-auto">
-          <table className="table-auto w-full border-collapse border border-gray-300">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="border border-gray-300 px-4 py-2 text-left">#</th>
-                <th className="border border-gray-300 px-4 py-2 text-left">First Name</th>
-                <th className="border border-gray-300 px-4 py-2 text-left">Last Name</th>
-                <th className="border border-gray-300 px-4 py-2 text-left">Email</th>
-                <th className="border border-gray-300 px-4 py-2 text-left">Account Type</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user, index) => (
-                <tr key={user.userId} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                  <td className="border border-gray-300 px-4 py-2">{index + 1}</td>
-                  <td className="border border-gray-300 px-4 py-2">{user.firstName}</td>
-                  <td className="border border-gray-300 px-4 py-2">{user.lastName}</td>
-                  <td className="border border-gray-300 px-4 py-2">{user.email}</td>
-                  <td className="border border-gray-300 px-4 py-2">{user.accountType}</td>
-                </tr>
+      {/* Search Bar */}
+      <div className="mb-4">
+        <Search placeholder="Search users..." handleSearch={handleSearch} />
+      </div>
+
+      {/* User List */}
+      {paginatedUsers.length > 0 ? (
+        <>
+          <UserList users={paginatedUsers} />
+
+          {/* Pagination Controls */}
+          <div className="flex items-center justify-center mt-4 space-x-4">
+            <button
+              onClick={() => setCurrentPage(currentPage - 1)}
+              disabled={currentPage === 1}
+              className={`px-4 py-2 rounded ${
+                currentPage === 1 ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500 text-white'
+              }`}
+            >
+              &larr; Previous
+            </button>
+
+            <select
+              value={currentPage}
+              onChange={(e) => setCurrentPage(Number(e.target.value))}
+              className="px-4 py-2 border rounded bg-white text-gray-700"
+            >
+              {Array.from({ length: totalPages }, (_, index) => (
+                <option key={index + 1} value={index + 1}>
+                  Page {index + 1}
+                </option>
               ))}
-            </tbody>
-          </table>
-        </div>
+            </select>
+
+            <button
+              onClick={() => setCurrentPage(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className={`px-4 py-2 rounded ${
+                currentPage === totalPages ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500 text-white'
+              }`}
+            >
+              Next &rarr;
+            </button>
+          </div>
+        </>
       ) : (
         <p>No users found.</p>
       )}

@@ -7,15 +7,14 @@ interface User {
 }
 
 interface UserListProps {
-  users: User[];
+  users: User[]; // Array of users to display
 }
 
 export default function UserList({ users }: UserListProps) {
   return (
     <div className="bg-white shadow-lg rounded-lg overflow-hidden w-full max-w-4xl mx-auto border border-gray-200">
-
       {/* Table */}
-      <div className="overflow-y-auto max-h-80">
+      <div className="overflow-y-auto max-h-100">
         <table className="w-full border-collapse">
           <thead>
             <tr className="bg-gray-100 text-left">

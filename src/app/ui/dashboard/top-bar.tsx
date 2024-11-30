@@ -46,7 +46,7 @@ export default function TopBar({ links = [] }: { links?: { name: string; href: s
 
         <button
         onClick={logout}
-        className="mt-4 px-4 py-2 bg-red-500 text-white rounded"
+        className="px-4 py-2 bg-red-500 text-white rounded"
         > Log out
         </button>
         </div>
