@@ -1,9 +1,44 @@
 import {jwtDecode} from 'jwt-decode'; // Install jwt-decode library
+import { User } from './definitions';
 
 type JwtPayload = {
-  Role: string; // Add other fields if needed
+  UserId: string;
+  Name:string;
+  Role: string;
+  GroupId: string;
 };
 
+export async function getCurrentUser(): Promise<{
+  UserId: string;
+  Name: string;
+  Role: string;
+  GroupId: string;
+}> {
+  // Ensure this only runs on the client
+  if (typeof window === "undefined") {
+    throw new Error("getCurrentUser must only be called on the client side.");
+  }
+
+  const token = localStorage.getItem("authToken");
+  if (!token) {
+    throw new Error("No token found. Please log in first.");
+  }
+
+  // Decode the JWT to extract user details
+  const decoded: JwtPayload = jwtDecode(token);
+  console.log("Decoded:", decoded);
+
+  if (!decoded.Role) {
+    throw new Error("Role not found in the JWT.");
+  }
+
+  return {
+    UserId: decoded.UserId,
+    Name: decoded.Name,
+    Role: decoded.Role,
+    GroupId: decoded.GroupId,
+  };
+}
 export async function getUsers():Promise<any[]> {
     const token = localStorage.getItem('authToken');
     if (!token) {
@@ -27,6 +62,31 @@ export async function getUsers():Promise<any[]> {
   return data; //list of users
     
 }
+
+
+
+export async function getClients(): Promise<any[]> {
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+    throw new Error("No token found. Please log in first.");
+  }
+
+  const response = await fetch("https://swafe24fitness.azurewebsites.net/api/Users/Clients", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch clients: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  return data; // List of clients
+}
+
 
 export async function addUser(newUser: {
   firstName: string;

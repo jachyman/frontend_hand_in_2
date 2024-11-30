@@ -4,6 +4,7 @@ interface User {
   id: string;
   name: string;
   surname: string;
+  email: string;
 }
 
 interface UserListProps {
@@ -27,6 +28,9 @@ export default function UserList({ users }: UserListProps) {
               <th className="py-4 px-6 text-sm font-bold text-gray-600 uppercase tracking-wider">
                 Surname
               </th>
+              <th className="py-4 px-6 text-sm font-bold text-gray-600 uppercase tracking-wider">
+                Email
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -43,6 +47,9 @@ export default function UserList({ users }: UserListProps) {
                 <td className="py-4 px-6 text-sm text-gray-700">{user.name}</td>
                 <td className="py-4 px-6 text-sm text-gray-700">
                   {user.surname}
+                </td>
+                <td className="py-4 px-6 text-sm text-gray-700">
+                  {user.email}
                 </td>
               </tr>
             ))}

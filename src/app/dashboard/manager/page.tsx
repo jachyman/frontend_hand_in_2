@@ -10,6 +10,7 @@ interface UserListUser {
   id: string;
   name: string;
   surname: string;
+  email: string;
 }
 
 export default function ManagerDashboard() {
@@ -33,6 +34,7 @@ export default function ManagerDashboard() {
           id: user.userId.toString(),
           name: user.firstName,
           surname: user.lastName,
+          email: user.email,
         }));
         setUsers(transformedUsers); // Set all users
         setFilteredUsers(transformedUsers); // Initialize filtered users

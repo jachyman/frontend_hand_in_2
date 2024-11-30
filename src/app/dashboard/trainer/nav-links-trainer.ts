@@ -1,8 +1,8 @@
 export const trainerLinks = [
-    { name: 'Workout plans', href: '/dashboard/client/workout-plan' },
-    { name: 'Users', href: '/dashboard/client/users' },
-    { name: 'Profile', href: '/dashboard/client/profile' }, // change this to dashboard/profile leave for now 
-    { name: 'Log out', href: '/' },
+    { name: 'Workout plans', href: '/dashboard/trainer/workout-plans' },
+    { name: 'Clients', href: '/dashboard/trainer' },
+    { name: 'Add new client', href: '/dashboard/trainer/add-client' }, // change this to dashboard/profile leave for now 
+
   ];
 
   
