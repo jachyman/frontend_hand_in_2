@@ -1,6 +1,7 @@
 import TopBar from "./ui/dashboard/top-bar";
 import { homeLinks } from "./nav-links-home";
 import Link from 'next/link';
+import Image from "next/image";
 
 export default function HomePage() {
   return (
@@ -18,27 +19,48 @@ export default function HomePage() {
 
           <div style={styles.thirds}>
             <section>
-              <h2>Create customized workout plans</h2>
+            <h3 style={styles.thirdsHeader}>Create customized workout plans</h3>
+            <ul>
+              <li style={styles.li}>As a our customer, you can create your workout acording to your needs</li>
+              <li style={styles.li}>If you log in to your profile, you will be able to see all your workouts</li>
+            </ul>
             </section>
             <section>
-              <h2>Track client progress</h2>
+            <h2 style={styles.thirdsHeader}>Track client progress</h2>
+            <ul>
+              <li style={styles.li}>As a our customer, you can track your progress</li>
+              <li style={styles.li}>As a trainer, you can track your clients progress</li>
+            </ul>
             </section>
             <section>
-              <h2>Organize routines with ease</h2>
+            <h2 style={styles.thirdsHeader}>Organize routines with ease</h2>
+            <ul>
+              <li style={styles.li}>You can organize your workout routines with ease</li>
+              <li style={styles.li}>Everything you needd is aviable on our website</li>
+            </ul>
             </section>
           </div>
-          </main>
+      </main>
+      <Image
+        src="/images/fitness.jpg"
+        alt="FITNESS"
+        width={925}
+        height={245}
+        layout="responsive"
+        objectFit="cover"
+        style={{
+          maxWidth: '100%',
+          height: 'auto'
+        }}
+      />
       </div>
   );
 }
 
-// Inline styles for simplicity
 const styles = {
   container: {
       fontFamily: 'Arial, sans-serif',
       textAlign: 'center',
-      //padding: '20px',
-      //maxWidth: '800px',
       margin: 'auto',
       color: '#333',
   },
@@ -48,7 +70,7 @@ const styles = {
   },
   title: {
       fontSize: '2.5rem',
-      color: '#2d89ef',
+      color: 'blue',
   },
   subtitle: {
       fontSize: '1.8rem',
@@ -61,9 +83,17 @@ const styles = {
       fontSize: '1.8rem',
       marginBottom: '15px',
   },
+  thirdsHeader: {
+    fontSize: '1.2rem',
+    fontWeight: 'bold'
+  },
+  li: {
+    backgroundColor: 'white',
+    margin: '10px'
+  },
   thirds: {
     display: 'grid',
     gridTemplateColumns: 'repeat(3, 1fr)',
-    backgroundColor: '#d3d3d3',
+    backgroundColor: 'silver',
   }
 };
