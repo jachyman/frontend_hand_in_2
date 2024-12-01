@@ -6,10 +6,11 @@ interface User {
   name: string;
   surname: string;
   email: string;
+  accountType: string;
 }
 
 interface UserListProps {
-  users: User[]; // Array of users to display
+  users: User[]; // Array of users to display,
 }
 
 export default function UserList({ users }: UserListProps) {
@@ -31,23 +32,28 @@ export default function UserList({ users }: UserListProps) {
               <th className="py-4 px-6 text-sm font-bold text-gray-600 uppercase tracking-wider">
                 Email
               </th>
+              <th className="py-4 px-6 text-sm font-bold text-gray-600 uppercase tracking-wider">
+                Account Type
+              </th>
             </tr>
           </thead>
           <tbody>
             {users.map((user, index) => (
+
               <tr
                 key={user.id}
-                className={`hover:bg-blue-50 transition duration-150 ease-in-out ${
+                className={`hover:bg-blue-50 transition duration-150 ease-in-out cursor-pointer ${
                   index % 2 === 0 ? "bg-gray-50" : "bg-white"
                 }`}
+                onClick={() => window.location.href = `/users/${user.id}`}
               >
+                
                 <td className="py-4 px-6 text-sm text-gray-700 font-medium">
                   {user.id}
                 </td>
                 <td className="py-4 px-6 text-sm text-gray-700 font-medium">
-                  <Link href={`/users/${user.id}`} className="text-blue-500 hover:underline">
+                 
                     {user.name}
-                  </Link>
                  </td>
                 <td className="py-4 px-6 text-sm text-gray-700">
                   {user.surname}
@@ -55,7 +61,12 @@ export default function UserList({ users }: UserListProps) {
                 <td className="py-4 px-6 text-sm text-gray-700">
                   {user.email}
                 </td>
+                <td className="py-4 px-6 text-sm text-gray-700">
+                  {user.accountType}
+                </td>
+                
               </tr>
+
             ))}
           </tbody>
         </table>

@@ -5,7 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import clsx from 'clsx';
 import useLogout from '@/app/logout/page';
 import { useEffect } from 'react';
-import { homeLinks } from '@/app/nav-links-home';
+import { homeLinks } from '@/app/dashboard/navLinksHome';
 
 export default function TopBar({ links = [] }: { links?: { name: string; href: string }[] }) { //specifying that links should be an array and which attributes it needs to have 
   const pathname = usePathname(); // for highlighting inactive/active

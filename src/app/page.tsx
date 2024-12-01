@@ -1,13 +1,9 @@
-import TopBar from "./ui/dashboard/top-bar";
-import { homeLinks } from "./nav-links-home";
+import { homeLinks } from "./dashboard/navLinksHome";
 import Image from "next/image";
 
 export default function HomePage() {
   return (
     <div className="text-center mx-auto text-gray-900">
-      
-      <TopBar links={homeLinks} />
-
       
       <header className="mb-8">
         <h1 className="mt-8 text-4xl font-bold text-blue-500">Welcome to YOUR-Fitness</h1>

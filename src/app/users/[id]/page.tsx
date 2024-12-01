@@ -1,14 +1,43 @@
-"use client"; // This marks the component as a client component
+"use client"; 
 
-import { useParams } from "next/navigation"; // Correct hook for dynamic route params
+import { useParams } from "next/navigation"; 
 import { useEffect, useState } from "react";
-import { getUserById } from "@/app/lib/api"; // Adjust the path based on your structure
+import { getUserById, getCurrentUser } from "@/app/lib/api"; 
+import { managerLinks } from '@/app/dashboard/manager/nav-links-manager';
+import { trainerLinks } from '@/app/dashboard/trainer/nav-links-trainer';
+
+
+interface Link {
+    name: string;
+    href: string;
+  }
 
 export default function UserDetails() {
-  const { id } = useParams(); // Use useParams to get the dynamic route parameter
+  const { id } = useParams(); // for dynamic routing
   const [user, setUser] = useState<any>(null);
+  const [links, setLinks] = useState<Link[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [currentUser, setCurrentUser] = useState<{ UserId: string; Name: string; Role: string; GroupId: string } | null>(null);
+
+  // get current user
+  useEffect(() => {
+    const fetchCurrent = async () => {
+      try {
+        const current = await getCurrentUser();
+        if (current.Role === "Trainer") {
+            setLinks(trainerLinks);
+          } else if (current.Role === "Manager") {
+            setLinks(managerLinks);
+          } 
+        setCurrentUser(current); 
+      } catch (err: any) {
+        setError(err.message);
+      }
+    };
+
+    fetchCurrent(); 
+  }, []);
 
   useEffect(() => {
     if (!id) return;
@@ -27,11 +56,14 @@ export default function UserDetails() {
     fetchUser();
   }, [id]);
 
+
   if (loading) return <p>Loading user details...</p>;
   if (error) return <p>Error: {error}</p>;
-
+  if(!currentUser) return <p>Loading...</p>
+  
   return (
     <div className="p-6">
+
       <h1 className="text-2xl font-bold mb-4">User Details</h1>
       {user ? (
         <div className="bg-white shadow-md p-6 rounded-lg">
@@ -45,6 +77,8 @@ export default function UserDetails() {
       ) : (
         <p>No user data found.</p>
       )}
+
+    <h1 className="mt-5 text-2xl font-bold mb-4">{user.firstName}'s workout plans:</h1>
     </div>
   );
 }

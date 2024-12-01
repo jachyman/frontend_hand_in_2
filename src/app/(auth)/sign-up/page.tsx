@@ -4,8 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { login } from '@/app/lib/api';
 import { User } from '../../lib/definitions';
-import { homeLinks } from '@/app/nav-links-home';
-import TopBar from '@/app/ui/dashboard/top-bar';
+import { homeLinks } from '@/app/dashboard/navLinksHome';
 
 export default function SignupForm() {
   const [formData, setFormData] = useState({
@@ -39,7 +38,6 @@ export default function SignupForm() {
 
   return (
     <div>
-      <TopBar links={homeLinks} /> 
     
       <form onSubmit={handleSubmit} className="space-y-3">
         <h1 className="text-2xl">Sign up</h1>

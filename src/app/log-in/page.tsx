@@ -3,8 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { login } from '@/app/lib/api';
-import TopBar from '../ui/dashboard/top-bar';
-import { homeLinks } from '../nav-links-home';
+import { homeLinks } from '../dashboard/navLinksHome';
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');
@@ -44,8 +43,6 @@ export default function LoginForm() {
 
   return (
     <div>
-      <TopBar links={homeLinks} /> 
-
     <form onSubmit={handleSubmit} className="space-y-3">
       <h1 className="text-2xl">Log In</h1>
       {error && <p className="text-red-500">{error}</p>}

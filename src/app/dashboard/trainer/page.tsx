@@ -11,6 +11,7 @@ interface UserListUser {
   name: string;
   surname: string;
   email: string;
+  accountType: string;
 }
 
 export default function TrainerDashboard() {
@@ -50,6 +51,7 @@ export default function TrainerDashboard() {
           name: user.firstName,
           surname: user.lastName,
           email: user.email,
+          accountType: user.accountType,
         }));
         setUsers(transformedUsers); // Set all users
         setFilteredUsers(transformedUsers); // Initialize filtered users
@@ -98,17 +100,17 @@ export default function TrainerDashboard() {
       <h1 className="text-2xl font-bold mb-4">Welcome back {user.Name}</h1>
       <p className="mb-6">Here you can see all of your clients and add new ones!</p>
 
-      {/* Search Bar */}
+     
       <div className="mb-4">
         <Search placeholder="Search clients..." handleSearch={handleSearch} />
       </div>
 
-      {/* User List */}
+ 
       {paginatedUsers.length > 0 ? (
         <>
           <UserList users={paginatedUsers} />
 
-          {/* Pagination Controls */}
+          
           <div className="flex items-center justify-center mt-4 space-x-4">
             <button
               onClick={() => setCurrentPage(currentPage - 1)}
