@@ -13,7 +13,7 @@ interface UserListUser {
   email: string;
 }
 
-export default function ManagerDashboard() {
+export default function TrainerDashboard() {
   const [users, setUsers] = useState<UserListUser[]>([]);
   const [user, setUser] = useState<{ UserId: string; Name: string; Role: string; GroupId: string } | null>(null);
   const [filteredUsers, setFilteredUsers] = useState<UserListUser[]>([]);
