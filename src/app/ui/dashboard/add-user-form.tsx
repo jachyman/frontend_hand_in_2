@@ -1,38 +1,51 @@
 import { useState } from 'react';
 import { addUser } from '@/app/lib/api';
-import { redirect } from 'next/navigation' ;
 
-export default function AddUserForm({ onUserAdded }: { onUserAdded: (user: any) => void }) {
+interface AddUserFormProps {
+  onUserAdded: (user: any) => void;
+  role: string; // Accept the role as a prop
+  personalTrainerId: string; // Accept personalTrainerId as a prop
+}
+
+export default function AddUserForm({
+  onUserAdded,
+  role,
+  personalTrainerId,
+}: AddUserFormProps) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [personalTrainerId, setPersonalTrainerId] = useState(0); // Default value
-  const [accountType, setAccountType] = useState('PersonalTrainer'); // Default value
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // Automatically set accountType based on role
+  const accountType = role === 'PersonalTrainer' ? 'Client' : 'PersonalTrainer';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
-    
 
     try {
+      // Use role and personalTrainerId in the API call
       const newUser = await addUser({
         firstName,
         lastName,
         email,
         password,
+        personalTrainerId: Number(personalTrainerId), 
         accountType,
       });
 
       // Notify the parent component about the new user
       onUserAdded({
-        id: newUser.userId.toString(), 
+        id: newUser.userId.toString(),
         name: newUser.firstName,
         surname: newUser.lastName,
         email: newUser.email,
+        accountType: newUser.accountType,
+        personalTrainerId: newUser.personalTrainerId,
       });
 
       // Reset form fields
@@ -40,8 +53,6 @@ export default function AddUserForm({ onUserAdded }: { onUserAdded: (user: any) 
       setLastName('');
       setEmail('');
       setPassword('');
-      setPersonalTrainerId(0);
-      setAccountType('PersonalTrainer');
     } catch (err) {
       setError('Failed to add user.');
     } finally {
@@ -91,33 +102,10 @@ export default function AddUserForm({ onUserAdded }: { onUserAdded: (user: any) 
           className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
         />
       </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Personal Trainer ID</label>
-        <input
-          type="number"
-          value={personalTrainerId}
-          onChange={(e) => setPersonalTrainerId(Number(e.target.value))}
-          required
-          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Account Type</label>
-        <select
-          value={accountType}
-          onChange={(e) => setAccountType(e.target.value)}
-          required
-          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-        >
-          <option value="PersonalTrainer">Personal Trainer</option>
-          <option value="Client">Client</option>
-        </select>
-      </div>
       {error && <p className="text-red-500 text-sm">{error}</p>}
       <button
         type="submit"
         disabled={loading}
-        //onSubmit={redirect('/dashboard/manager/')}
         className={`mt-2 w-full px-4 py-2 text-white rounded ${
           loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
         }`}

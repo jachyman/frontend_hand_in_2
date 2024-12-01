@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 interface User {
@@ -14,7 +15,6 @@ interface UserListProps {
 export default function UserList({ users }: UserListProps) {
   return (
     <div className="bg-white shadow-lg rounded-lg overflow-hidden w-full max-w-4xl mx-auto border border-gray-200">
-      {/* Table */}
       <div className="overflow-y-auto max-h-100">
         <table className="w-full border-collapse">
           <thead>
@@ -44,7 +44,11 @@ export default function UserList({ users }: UserListProps) {
                 <td className="py-4 px-6 text-sm text-gray-700 font-medium">
                   {user.id}
                 </td>
-                <td className="py-4 px-6 text-sm text-gray-700">{user.name}</td>
+                <td className="py-4 px-6 text-sm text-gray-700 font-medium">
+                  <Link href={`/users/${user.id}`} className="text-blue-500 hover:underline">
+                    {user.name}
+                  </Link>
+                 </td>
                 <td className="py-4 px-6 text-sm text-gray-700">
                   {user.surname}
                 </td>

@@ -93,6 +93,7 @@ export async function addUser(newUser: {
   lastName: string;
   email: string;
   password: string;
+  personalTrainerId: Number;
   accountType: string;
 }) {
   const token = localStorage.getItem('authToken');
@@ -114,6 +115,32 @@ export async function addUser(newUser: {
   }
 
   return response.json();
+}
+
+export async function getUserById(id: number): Promise<any> {
+  const token = localStorage.getItem("authToken");
+  if (!token) {
+    throw new Error("No token found. Please log in first.");
+  }
+
+  const response = await fetch(
+    `https://swafe24fitness.azurewebsites.net/api/Users/${id}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch user: ${response.statusText}`);
+  }
+
+  // Parse and return the JSON response
+  const data = await response.json();
+  return data; // Return the user data
 }
 
 
