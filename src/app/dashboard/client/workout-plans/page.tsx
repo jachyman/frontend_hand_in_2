@@ -2,11 +2,12 @@
 
 import { getWorkoutPrograms } from "@/app/lib/api"
 import { useState, useEffect } from 'react';
+import WorkoutList from "@/app/ui/workout-list";
 
 export default function workoutPlans() {
 
     const [workoutPlans, setWorkoutPlans] = useState<any[]>([]); // Flexible array
-
+    
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -18,21 +19,18 @@ export default function workoutPlans() {
                     setWorkoutPlans(workoutData);
                 }
             } catch (err) {
-                const error = err as Error;
+                //const error = err as Error;
                 //setError(error.message);
             }
         };
         fetchData();
-    }, []); // Run once on component mount   
+    }, []); // Run once on component mount
 
     return (
         <div>
-            {workoutPlans.map((plan) => (
-                <div key={plan.workoutProgramId}>
-                    <h3>Name: {plan.name}</h3>
-                    <p>Description: {plan.description}</p>
-                </div>
-            ))}
+
+            <WorkoutList workouts={workoutPlans} />
+
         </div>
     );
 }
