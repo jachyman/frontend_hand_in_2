@@ -22,7 +22,7 @@ export default function LoginForm() {
 
       // Save the JWT token in localStorage 
       localStorage.setItem('authToken', token);
-
+      window.dispatchEvent(new Event('storage'));
       // Redirect based on the user's role
       if (role === 'Manager') {
         router.push('/dashboard/manager');

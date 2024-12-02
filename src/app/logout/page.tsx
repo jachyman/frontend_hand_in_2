@@ -8,10 +8,10 @@ export default function useLogout() {
   const logout = () => {
     // Clear the auth token from localStorage
     localStorage.removeItem('authToken');
-
-    // Redirect to the login page
-    router.push('/log-in');
-  };
+    localStorage.removeItem('userId');
+    window.dispatchEvent(new Event('storage'));
+    router.push('/');
+  };  
 
   return logout;
 }
