@@ -43,6 +43,31 @@ export async function getCurrentUser(): Promise<{
     GroupId: decoded.GroupId,
   };
 }
+
+export async function getTrainers(): Promise<any[]> {
+  const token = localStorage.getItem("authToken");
+  if (!token) {
+    throw new Error("No token found. Please log in first.");
+  }
+
+  const response = await fetch("https://swafe24fitness.azurewebsites.net/api/Users/Trainer", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch trainers: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  return data; // Returns the list of trainers
+}
+
+
+
 export async function getUsers():Promise<any[]> {
     const token = localStorage.getItem('authToken');
     if (!token) {
@@ -120,6 +145,9 @@ export async function getClients(): Promise<any[]> {
   const data = await response.json();
   return data; // List of clients
 }
+
+
+
 
 
 export async function addUser(newUser: {
