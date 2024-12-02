@@ -2,6 +2,7 @@
 
 import '@/app/ui/global.css';
 import TopBar from '@/app/ui/dashboard/top-bar';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { getCurrentUser } from '@/app/lib/api';
 import { homeLinks } from '@/app/dashboard/navLinksHome';
@@ -15,9 +16,10 @@ interface Link {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const [links, setLinks] = useState<Link[]>([]); 
+  const [links, setLinks] = useState<Link[]>([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<{ UserId: string; Name: string; Role: string; GroupId: string } | null>(null);
+  const router = useRouter();
 
   const fetchUserAndSetLinks = async () => {
     const authToken = localStorage.getItem('authToken');
@@ -35,10 +37,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       // Set links based on the user's role
       if (currentUser?.Role === 'PersonalTrainer') {
         setLinks(trainerLinks);
+        router.push('/dashboard/trainer');
       } else if (currentUser?.Role === 'Manager') {
         setLinks(managerLinks);
+        router.push('/dashboard/manager');
       } else if (currentUser?.Role === 'Client') {
         setLinks(clientLinks);
+        router.push('/dashboard/client');
       } else {
         setLinks(homeLinks);
       }

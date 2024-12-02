@@ -34,28 +34,34 @@ export default function WorkoutList({
     <div style={styles.container}>
       {/* Left side workout list */}
       <div style={styles.firstQuarter as CSSProperties}>
-        {workouts.map((workout) => (
-          <div
-            key={workout.workoutProgramId}
-            onClick={() => handleWorkoutClick(workout.workoutProgramId)}
-            onMouseOver={() => setHoveredWorkoutId(workout.workoutProgramId)}
-            onMouseOut={() => setHoveredWorkoutId(null)}
-            style={{
-              backgroundColor:
-                hoveredWorkoutId === workout.workoutProgramId
-                  ? 'lightblue'
-                  : selectedWorkout === workout.workoutProgramId
-                  ? 'lightgreen'
-                  : 'white',
-              cursor: 'pointer',
-              padding: '10px',
-              marginBottom: '5px',
-              border: '1px solid gray',
-            }}
-          >
-            <h3>{workout.name}</h3>
-          </div>
-        ))}
+        {workouts.length > 0 ? (
+          workouts.map((workout) => (
+            <div
+              key={workout.workoutProgramId}
+              onClick={() => handleWorkoutClick(workout.workoutProgramId)}
+              onMouseOver={() => setHoveredWorkoutId(workout.workoutProgramId)}
+              onMouseOut={() => setHoveredWorkoutId(null)}
+              style={{
+                backgroundColor:
+                  hoveredWorkoutId === workout.workoutProgramId
+                    ? 'lightblue'
+                    : selectedWorkout === workout.workoutProgramId
+                    ? 'lightgreen'
+                    : 'white',
+                cursor: 'pointer',
+                padding: '10px',
+                marginBottom: '5px',
+                border: '1px solid gray',
+              }}
+            >
+              <h3>{workout.name}</h3>
+            </div>
+          ))
+        ) : (
+          <p style={{ padding: '20px', textAlign: 'center' }}>
+            No workout plans assigned to this personal trainer
+          </p>
+        )}
       </div>
 
       {/* Right side exercise list */}
@@ -80,7 +86,7 @@ const styles = {
     flex: '1',
     backgroundColor: 'silver',
     padding: '10px',
-    overflowY: 'auto', // Explicitly cast as CSSProperties
+    overflowY: 'auto',
   },
   threeQuarters: {
     flex: '3',
