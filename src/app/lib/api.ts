@@ -67,6 +67,37 @@ export async function getUsers():Promise<any[]> {
 }
 
 
+export async function addExerciseToWorkoutProgram(
+  selectedProgramId:number,
+  newExercise: {
+  name: string;
+  description: string;
+  sets: Number;
+  repetitions: Number;
+  time: string;
+}){
+
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+    throw new Error('No token found. Please log in first.');
+  }
+
+  const response = await fetch(`https://swafe24fitness.azurewebsites.net/api/Exercises/Program/${selectedProgramId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify(newExercise),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to add exercise to a workout program: ${response.statusText}`);
+  }
+
+  return response.json();
+}
+
 
 export async function getClients(): Promise<any[]> {
   const token = localStorage.getItem('authToken');
