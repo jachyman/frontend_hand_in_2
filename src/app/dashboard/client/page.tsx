@@ -10,27 +10,16 @@ export default function workoutPlans() {
     
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                const userIdString = localStorage.getItem('userId'); // Retrieve from localStorage
-                if (userIdString) {
-                    const parsedUserId = JSON.parse(userIdString);
-                    // Fetch workout plans
-                    const workoutData = await getWorkoutPrograms(parsedUserId);
-                    setWorkoutPlans(workoutData);
-                }
-            } catch (err) {
-                //const error = err as Error;
-                //setError(error.message);
-            }
+            // Fetch workout plans
+            const workoutData = await getWorkoutPrograms();
+            setWorkoutPlans(workoutData);
         };
         fetchData();
     }, []); // Run once on component mount
 
     return (
         <div>
-
             <WorkoutList workouts={workoutPlans} />
-
         </div>
     );
 }

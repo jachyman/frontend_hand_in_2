@@ -187,13 +187,13 @@ export async function login(email: string, password: string): Promise<{ token: s
       throw new Error('UserId not found in the JWT.');
   }
 
-  localStorage.setItem('userId', JSON.stringify(userId));
+  //localStorage.setItem('userId', JSON.stringify(userId));
   //console.log('UserId:', userId);
 
   return { token: data.jwt, role: decoded.Role };
 }
 
-export async function getWorkoutPrograms(UserId: number): Promise<any[]> {
+export async function getWorkoutProgramsById(UserId: number): Promise<any[]> {
 
   const token = localStorage.getItem('authToken');
   if (!token) {
@@ -201,6 +201,53 @@ export async function getWorkoutPrograms(UserId: number): Promise<any[]> {
   }
 
   const response = await fetch('https://swafe24fitness.azurewebsites.net/api/WorkoutPrograms/client/' + UserId, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`, 
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch workout programs: ${response.statusText}`);
+  }
+
+  // Parse and return the JSON response
+  const data = await response.json();
+  return data; //list of users
+}
+
+export async function getWorkoutPrograms(): Promise<any[]> {
+
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+      throw new Error('No token found. Please log in first.');
+  }
+
+  const response = await fetch('https://swafe24fitness.azurewebsites.net/api/WorkoutPrograms', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`, 
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch workout programs: ${response.statusText}`);
+  }
+
+  // Parse and return the JSON response
+  const data = await response.json();
+  return data; //list of users
+}
+
+export async function getWorkoutProgramsTrainer(): Promise<any[]> {
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+      throw new Error('No token found. Please log in first.');
+  }
+
+  const response = await fetch('https://swafe24fitness.azurewebsites.net/api/WorkoutPrograms/trainer', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

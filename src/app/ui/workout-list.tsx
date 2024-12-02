@@ -1,23 +1,23 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import ExcercisesList from './dashboard/excersice-list';
 
 
 export default function WorkoutList({
     workouts = [],
   }: {
-    workouts?: { exerciseId: number, groupId: number, workoutProgramId: string; name: string; description: string, repetitions: string,  time: string, personalTrainerId: number}[];
+    workouts?: { groupId: number, workoutProgramId: string; name: string; description: string, exercises: [], personalTrainerId: number}[];
     }) {
     
     const [selectedWorkout, setSelectedWorkout] = useState(workouts[0]); // Default to the first workout
     const [hoveredWorkoutId, setHoveredWorkoutId] = useState<string | null>(null); // Track the hovered workout
     
     return (
-        <div style={styles.halves}>
+        <div style={styles.container}>
             
-            <section>
             {/* left side workout list */}
-            <div>
+            <div style={styles.firstQuarter}>
                 {workouts.map((workout) => (
                     <div
                         key={workout.workoutProgramId}
@@ -33,37 +33,24 @@ export default function WorkoutList({
                     </div>
             ))}
                 </div>
-            </section>
-
-            <section>
-            <div>
-                {selectedWorkout ? (
-                <>
-                    <h2>Name: {selectedWorkout.name}</h2>
-                    {/*
-                    <p>Excercise ID: {selectedWorkout.exerciseId}</p>
-                    <p>Group ID: {selectedWorkout.groupId}</p> 
-                    <p>Workout Program ID: {selectedWorkout.workoutProgramId}</p>
-                    */}
-                    <p>Description: {selectedWorkout.description}</p>
-                    <p>Repetitions: {selectedWorkout.repetitions}</p>
-                    <p>Time: {selectedWorkout.time}</p>
-                    <p>Personal Trainer ID: {selectedWorkout.personalTrainerId}</p>
-                </>
-                ) : (
-                <p>Select a workout to see details.</p>
-                )}
-                </div>
-            </section>
+ 
+            {/* right side excercises list */}
+            <div style={styles.threeQuartes}>
+                <ExcercisesList exercises={selectedWorkout?.exercises || []} />
+            </div>
       </div>
     );
 }
   
 const styles = {
-
-    halves: {
-        display: 'grid',
-        gridTemplateColumns: 'repeat(2, 1fr)',
+    container: {
+        display: 'flex'
+    },
+    firstQuarter: {
+        flex: '1',
         backgroundColor: 'silver',  
     },
+    threeQuartes: {
+        flex: '3',
+    }
   };
