@@ -15,7 +15,7 @@ export default function TopBar({ links = [] }: { links?: { name: string; href: s
   useEffect(() => {
     const token = localStorage.getItem('authToken');
 
-    if (!token && links[0].name != 'this_is_home') {
+    if (!token && links != homeLinks) {
       router.push('/log-in');
     }
   }, [router]);
