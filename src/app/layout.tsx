@@ -2,7 +2,7 @@
 
 import '@/app/ui/global.css';
 import TopBar from '@/app/ui/dashboard/top-bar';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation'; 
 import { useEffect, useState } from 'react';
 import { getCurrentUser } from '@/app/lib/api';
 import { homeLinks } from '@/app/dashboard/navLinksHome';
@@ -16,11 +16,10 @@ interface Link {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const [links, setLinks] = useState<Link[]>([]);
+  const [links, setLinks] = useState<Link[]>([]); 
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<{ UserId: string; Name: string; Role: string; GroupId: string } | null>(null);
   const router = useRouter();
-
   const fetchUserAndSetLinks = async () => {
     const authToken = localStorage.getItem('authToken');
     if (!authToken) {
@@ -46,6 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         router.push('/dashboard/client');
       } else {
         setLinks(homeLinks);
+        router.push('/');
       }
     } catch (error) {
       console.error('Error fetching user:', error);
