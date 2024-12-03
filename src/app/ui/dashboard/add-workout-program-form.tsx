@@ -35,7 +35,7 @@ export default function AddWorkoutProgramForm({
         personalTrainerId: Number(personalTrainerId), 
         clientId: Number(clientId),
       });
-      console.log(newWorkoutProgram)
+      //console.log(newWorkoutProgram)
       
       /*
       // Notify the parent component about the new user
