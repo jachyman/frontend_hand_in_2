@@ -153,7 +153,7 @@ export default function AddExercise() {
       const value = e.target.value;
       setExercise({ 
         ...exercise, 
-        sets: value === "" ? null : Number(value) 
+        sets: value === "" ? 1 : Number(value) 
       });
     }}
     min={1}
