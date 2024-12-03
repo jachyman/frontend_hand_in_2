@@ -322,3 +322,31 @@ export async function getWorkoutProgramsTrainer(): Promise<any[]> {
   const data = await response.json();
   return data; //list of users
 }
+
+export async function addWorkoutProgram(newWorkoutProgram: {
+  name: string;
+  description: string;
+  exercises: any[];
+  personalTrainerId: Number;
+  clientId: Number;
+}) {
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+    throw new Error('No token found. Please log in first.');
+  }
+
+  const response = await fetch('https://swafe24fitness.azurewebsites.net/api/WorkoutPrograms', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify(newWorkoutProgram), // Correct structure for the payload
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to add workout program: ${response.statusText}`);
+  }
+
+  return response.json();
+}
