@@ -107,11 +107,13 @@ export default function UserDetails() {
 
           <div className="flex justify-between items-center mt-5 mb-4">
             <h1 className="mt-5 text-2xl font-bold mb-4">{user.firstName}'s workout plans:</h1>
-            <button
-              className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600"
-              onClick={handleAddWorkoutPlanClick}>
-              Add New Workout Plan
-            </button>
+            {currentUser.Role !== "Manager" && (
+              <button
+                className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600"
+                onClick={handleAddWorkoutPlanClick}>
+                Add New Workout Plan
+              </button> 
+            )}
           </div>
           <WorkoutList workouts={currentUserWorkoutProgram} />
         </div>

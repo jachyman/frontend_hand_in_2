@@ -65,14 +65,12 @@ export default function ManagerDashboard() {
     setCurrentPage(1); // Reset to page 1 when the query changes
   }, [query, users]);
 
-  // Update paginated users when currentPage or filteredUsers changes
   useEffect(() => {
     const startIndex = (currentPage - 1) * ITEM_PER_PAGE;
     const endIndex = startIndex + ITEM_PER_PAGE;
     setPaginatedUsers(filteredUsers.slice(startIndex, endIndex));
   }, [currentPage, filteredUsers]);
 
-  // Handle search input
   const handleSearch = (term: string) => {
     setQuery(term);
   };
@@ -90,12 +88,12 @@ export default function ManagerDashboard() {
         <Search placeholder="Search users..." handleSearch={handleSearch} />
       </div>
 
-      {/* User List */}
+
       {paginatedUsers.length > 0 ? (
         <>
           <UserList users={paginatedUsers} />
 
-          {/* Pagination Controls */}
+
           <div className="flex items-center justify-center mt-4 space-x-4">
             <button
               onClick={() => setCurrentPage(currentPage - 1)}
