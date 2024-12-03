@@ -1,4 +1,4 @@
 export const homeLinks = [
-    { name: 'Sign up', href: '/sign-up' },
+    { name: 'Home', href: '/'},
     { name: 'Log in', href: '/log-in' },
   ];

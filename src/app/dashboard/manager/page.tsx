@@ -11,6 +11,7 @@ interface UserListUser {
   name: string;
   surname: string;
   email: string;
+  accountType:string;
 }
 
 export default function ManagerDashboard() {
@@ -35,6 +36,7 @@ export default function ManagerDashboard() {
           name: user.firstName,
           surname: user.lastName,
           email: user.email,
+          accountType: user.accountType,
         }));
         setUsers(transformedUsers); // Set all users
         setFilteredUsers(transformedUsers); // Initialize filtered users
@@ -55,7 +57,8 @@ export default function ManagerDashboard() {
   useEffect(() => {
     const filtered = users.filter((user) =>
       user.name.toLowerCase().includes(query.toLowerCase()) ||
-      user.surname.toLowerCase().includes(query.toLowerCase())
+      user.surname.toLowerCase().includes(query.toLowerCase()) ||
+      user.email.toLowerCase().includes(query.toLowerCase())
     );
     setFilteredUsers(filtered);
     setTotalPages(Math.ceil(filtered.length / ITEM_PER_PAGE));

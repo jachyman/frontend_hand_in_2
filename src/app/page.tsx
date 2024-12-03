@@ -43,15 +43,15 @@ export default function HomePage() {
 
       {/* Footer Image */}
       <div className="mt-8">
-        <Image
-          src="/images/fitness.jpg"
-          alt="FITNESS"
-          width={925}
-          height={245}
-          layout="responsive"
-          objectFit="cover"
-          className="w-full rounded-md"
-        />
+      <Image
+      src="/images/fitness.jpg"
+      alt="FITNESS"
+      width={925}
+      height={245}
+      style={{ objectFit: 'cover' }}
+      className="w-full rounded-md"
+    />
+
       </div>
     </div>
   );

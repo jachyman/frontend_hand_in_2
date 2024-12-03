@@ -1,4 +1,4 @@
-import {jwtDecode} from 'jwt-decode'; // Install jwt-decode library
+import {jwtDecode} from 'jwt-decode'; 
 import { User } from './definitions';
 import { number } from 'zod';
 import { useEffect } from "react"
@@ -43,6 +43,31 @@ export async function getCurrentUser(): Promise<{
     GroupId: decoded.GroupId,
   };
 }
+
+export async function getTrainers(): Promise<any[]> {
+  const token = localStorage.getItem("authToken");
+  if (!token) {
+    throw new Error("No token found. Please log in first.");
+  }
+
+  const response = await fetch("https://swafe24fitness.azurewebsites.net/api/Users/Trainer", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch trainers: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  return data; // Returns the list of trainers
+}
+
+
+
 export async function getUsers():Promise<any[]> {
     const token = localStorage.getItem('authToken');
     if (!token) {
@@ -67,6 +92,37 @@ export async function getUsers():Promise<any[]> {
 }
 
 
+export async function addExerciseToWorkoutProgram(
+  selectedProgramId:number,
+  newExercise: {
+  name: string;
+  description: string;
+  sets: Number;
+  repetitions: Number;
+  time: string;
+}){
+
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+    throw new Error('No token found. Please log in first.');
+  }
+
+  const response = await fetch(`https://swafe24fitness.azurewebsites.net/api/Exercises/Program/${selectedProgramId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify(newExercise),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to add exercise to a workout program: ${response.statusText}`);
+  }
+
+  return response.json();
+}
+
 
 export async function getClients(): Promise<any[]> {
   const token = localStorage.getItem('authToken');
@@ -89,6 +145,9 @@ export async function getClients(): Promise<any[]> {
   const data = await response.json();
   return data; // List of clients
 }
+
+
+
 
 
 export async function addUser(newUser: {

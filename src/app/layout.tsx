@@ -2,8 +2,8 @@
 
 import '@/app/ui/global.css';
 import TopBar from '@/app/ui/dashboard/top-bar';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { getCurrentUser } from '@/app/lib/api';
 import { homeLinks } from '@/app/dashboard/navLinksHome';
 import { managerLinks } from '@/app/dashboard/manager/nav-links-manager';
 import { clientLinks } from '@/app/dashboard/client/nav-links-client';
@@ -15,65 +15,38 @@ interface Link {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const [links, setLinks] = useState<Link[]>([]); 
-  const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<{ UserId: string; Name: string; Role: string; GroupId: string } | null>(null);
-
-  const fetchUserAndSetLinks = async () => {
-    const authToken = localStorage.getItem('authToken');
-    if (!authToken) {
-      setLinks(homeLinks);
-      setUser(null);
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const currentUser = await getCurrentUser();
-      setUser(currentUser);
-
-      // Set links based on the user's role
-      if (currentUser?.Role === 'PersonalTrainer') {
-        setLinks(trainerLinks);
-      } else if (currentUser?.Role === 'Manager') {
-        setLinks(managerLinks);
-      } else if (currentUser?.Role === 'Client') {
-        setLinks(clientLinks);
-      } else {
-        setLinks(homeLinks);
-      }
-    } catch (error) {
-      console.error('Error fetching user:', error);
-      setLinks(homeLinks);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [links, setLinks] = useState<Link[]>(homeLinks); // Default to homeLinks
+  const pathname = usePathname(); // Current route
+  const [staticRendered, setStaticRendered] = useState(true);
 
   useEffect(() => {
-    fetchUserAndSetLinks();
-
-    const handleAuthChange = () => {
-      fetchUserAndSetLinks();
+    // Dynamically determine top bar links based on pathname
+    const determineLinks = () => {
+      if (pathname === '/' || pathname === '/log-in') {
+        setLinks(homeLinks);
+      } else if (pathname.startsWith('/dashboard/manager')) {
+        setLinks(managerLinks);
+      } else if (pathname.startsWith('/dashboard/trainer')) {
+        setLinks(trainerLinks);
+      } else if (pathname.startsWith('/dashboard/client')) {
+        setLinks(clientLinks);
+      } else {
+        setLinks(homeLinks); // Default fallback
+      }
     };
 
-    window.addEventListener('storage', handleAuthChange);
+    determineLinks();
+    setStaticRendered(true); // Ensure layout renders immediately
+  }, [pathname]);
 
-    return () => {
-      window.removeEventListener('storage', handleAuthChange);
-    };
-  }, []);
-
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
+  // Render HTML and BODY tags while ensuring partial rendering
   return (
     <html lang="en">
       <body className="flex flex-col h-screen">
         <TopBar links={links} />
+
         <main className="flex-grow overflow-y-auto bg-gray-100 p-6 md:p-12">
-          {children}
+          {staticRendered ? children : <p>Loading...</p>}
         </main>
       </body>
     </html>
